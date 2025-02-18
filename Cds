@@ -1,0 +1,77 @@
+import React, { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ShoppingCart, Trash, CreditCard } from "lucide-react";
+
+const products = [
+  { id: 1, name: "Gaming Laptop", price: "$999", image: "https://via.placeholder.com/150" },
+  { id: 2, name: "Mechanical Keyboard", price: "$129", image: "https://via.placeholder.com/150" },
+  { id: 3, name: "Wireless Mouse", price: "$59", image: "https://via.placeholder.com/150" },
+];
+
+export default function CriticTech() {
+  const [cart, setCart] = useState([]);
+
+  const addToCart = (product) => {
+    setCart([...cart, product]);
+  };
+
+  const removeFromCart = (index) => {
+    setCart(cart.filter((_, i) => i !== index));
+  };
+
+  const checkout = () => {
+    alert("Checkout process started. This is a placeholder for future payment integration.");
+  };
+
+  return (
+    <div className="min-h-screen bg-black text-white p-6">
+      <header className="text-center text-3xl font-bold text-red-500">CriticTech</header>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+        {products.map((product) => (
+          <Card key={product.id} className="bg-white text-black p-4 rounded-lg">
+            <img src={product.image} alt={product.name} className="w-full h-40 object-cover mb-4" />
+            <CardContent>
+              <h2 className="text-xl font-semibold">{product.name}</h2>
+              <p className="text-red-500 font-bold">{product.price}</p>
+              <Button
+                className="mt-4 bg-red-500 text-white flex items-center gap-2"
+                onClick={() => addToCart(product)}
+              >
+                <ShoppingCart size={16} /> Add to Cart
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      
+      <div className="mt-10 p-4 bg-gray-800 rounded-lg">
+        <h2 className="text-2xl text-white font-bold mb-4">Shopping Cart</h2>
+        {cart.length === 0 ? (
+          <p className="text-gray-400">Your cart is empty.</p>
+        ) : (
+          <>
+            <ul>
+              {cart.map((item, index) => (
+                <li key={index} className="flex justify-between items-center mb-2">
+                  <span>{item.name} - {item.price}</span>
+                  <Button
+                    className="bg-red-500 text-white flex items-center gap-2"
+                    onClick={() => removeFromCart(index)}
+                  >
+                    <Trash size={16} /> Remove
+                  </Button>
+                </li>
+              ))}
+            </ul>
+            <Button className="mt-4 bg-green-500 text-white flex items-center gap-2" onClick={checkout}>
+              <CreditCard size={16} /> Checkout
+            </Button>
+          </>
+        )}
+      </div>
+      
+      <footer className="text-center mt-10 text-sm text-gray-400">&copy; 2025 CriticTech</footer>
+    </div>
+  );
+}
